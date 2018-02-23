@@ -3,19 +3,16 @@ package com.example.maola.popularmovies.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.maola.popularmovies.DetailActivity;
 import com.example.maola.popularmovies.Models.Movie;
 import com.example.maola.popularmovies.R;
-import com.example.maola.popularmovies.Retrofit.MovieAPI;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

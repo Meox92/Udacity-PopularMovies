@@ -1,9 +1,6 @@
 package com.example.maola.popularmovies.Retrofit;
 
-import com.example.maola.popularmovies.Models.Movie;
 import com.example.maola.popularmovies.Models.Results;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -15,7 +12,7 @@ import retrofit2.http.Query;
 
 public interface MovieAPI {
 
-    static final String BASE_URL_POSTER = "http://image.tmdb.org/t/p/";
+    String BASE_URL_POSTER = "http://image.tmdb.org/t/p/";
 
     @GET("movie/popular")
     Call<Results> getPopularResults(@Query("api_key") String API_KEY);

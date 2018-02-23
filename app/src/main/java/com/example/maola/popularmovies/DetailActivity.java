@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maola.popularmovies.Models.Movie;
-import com.example.maola.popularmovies.Retrofit.MovieAPI;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -28,8 +27,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.detail_overview )
     TextView detailOverview;
 
-    private Movie movieList;
-    private String BASE_POSTER_URL = "http://image.tmdb.org/t/p/w185";
+    private final String BASE_POSTER_URL = "http://image.tmdb.org/t/p/w185";
 
 //    private String
 //    private String release_date;
@@ -48,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.detail_title);
 
         Intent i = getIntent();
-        movieList = i.getParcelableExtra("movie");
+        Movie movieList = i.getParcelableExtra("movie");
         String a = movieList.getTitle();
         //Toast.makeText(this,a , Toast.LENGTH_LONG).show();
         detailTitle.setText(a);

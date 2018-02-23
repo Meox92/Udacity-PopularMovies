@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">PopularMovies</string>
-    <string name="action_settings">Settings</string>
     <string name="popular">Most Popular</string>
     <string name="top_rated">Top Rated</string>
     <string name="poster">poster</string>
-    <string name="loading">Loading in progress</string>
     <string name="title_activity_detail">DetailActivity</string>
-    <string name="average_rate">Average rate</string>
+    <string name="average_rate">Average rate: </string>
 
 </resources>

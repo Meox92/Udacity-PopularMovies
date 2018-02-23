@@ -1,18 +1,5 @@
 package com.example.maola.popularmovies.Retrofit;
 
-
-import android.util.Log;
-import android.widget.Toast;
-
-import com.example.maola.popularmovies.Models.Movie;
-import com.example.maola.popularmovies.Models.Results;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by Maola on 18/02/2018.
  */
