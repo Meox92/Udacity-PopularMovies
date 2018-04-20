@@ -2,8 +2,11 @@
     <string name="app_name">PopularMovies</string>
     <string name="popular">Most Popular</string>
     <string name="top_rated">Top Rated</string>
+    <string name="favorite">Favorite</string>
+
     <string name="poster">poster</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="average_rate">Average rate: </string>
+    <string name="trailers">Trailers</string>
 
 </resources>

@@ -1,9 +1,11 @@
 package com.example.maola.popularmovies.Retrofit;
 
 import com.example.maola.popularmovies.Models.Results;
+import com.example.maola.popularmovies.Models.ResultsTrailer;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -22,4 +24,10 @@ public interface MovieAPI {
 
     @GET("movie/popular")
     Call<String> getPoster();
+
+    @GET("movie/{id}/videos")
+    Call<ResultsTrailer> getTrailers (@Path("id") int id, @Query("api_key") String API_KEY);
+
+    @GET("movie/{id}/reviews")
+    Call<Results> getReviews (@Path("id") int id, @Query("api_key") String API_KEY);
 }

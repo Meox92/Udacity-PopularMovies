@@ -9,7 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [ API_KEY:getApiKey()]
+        manifestPlaceholders = [API_KEY: getApiKey()]
 
     }
     buildTypes {
@@ -18,13 +18,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-    applicationVariants.all { variant ->
-        variant.buildConfigField "String", "API_KEY", "\""+getApiKey()+"\""
-    }
+        applicationVariants.all { variant ->
+            variant.buildConfigField "String", "API_KEY", "\"" + getApiKey() + "\""
+        }
     }
 }
 
-def getApiKey(){
+def getApiKey() {
     def Properties props = new Properties()
     props.load(new FileInputStream(new File('secrets.properties')))
     return props['API_KEY']
@@ -43,4 +43,5 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'}
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+}

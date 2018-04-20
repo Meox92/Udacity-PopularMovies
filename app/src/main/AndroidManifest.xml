@@ -30,6 +30,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.maola.popularmovies.MainActivity" />
         </activity>
+        <!-- Register the provider -->
+        <provider
+            android:name=".Data.ContentProvider.MovieContentProvider"
+            android:authorities="com.example.maola.popularmovies"
+            android:exported="false" />
+
     </application>
 
 </manifest>

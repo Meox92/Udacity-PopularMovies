@@ -23,6 +23,8 @@ public class Results {
     @SerializedName("results")
     @Expose
     private List<Movie> results = null;
+    @Expose
+    private List<Trailer> trailerResults = null;
 
     public Integer getPage() {
         return page;
@@ -51,6 +53,9 @@ public class Results {
     public List<Movie> getResults() {
         return results;
     }
+
+    public List<Trailer> getTrailerResults() {return trailerResults;}
+
 
     public void setResults(List<Movie> results) {
         this.results = results;

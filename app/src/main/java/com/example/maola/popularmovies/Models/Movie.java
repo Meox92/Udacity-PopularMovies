@@ -24,7 +24,26 @@ public class Movie  implements Parcelable {
     boolean adult;
     String overview;
     String release_date;
+    boolean favored;
 
+
+    public Movie(int id, String title, String overview, double vote_average, int vote_count, String backdrop_path, String poster_path, String release_date, boolean favored) {
+        this.vote_count = vote_count;
+        this.id = id;
+//        this.video = video;
+        this.vote_average = vote_average;
+        this.title = title;
+//        this.popularity = popularity;
+        this.poster_path = poster_path;
+//        this.original_language = original_language;
+//        this.original_title = original_title;
+//        this.genre_ids = genre_ids;
+        this.backdrop_path = backdrop_path;
+//        this.adult = adult;
+        this.overview = overview;
+        this.release_date = release_date;
+        this.favored = favored;
+    }
 //    public Movie(int vote_count, int id, boolean video, double vote_average, String title, double popularity, String poster_path, String original_language, String original_title, List<Integer> genre_ids, String backdrop_path, boolean adult, String overview, String release_date) {
 //        this.vote_count = vote_count;
 //        this.id = id;
@@ -56,6 +75,7 @@ public class Movie  implements Parcelable {
         adult = in.readByte() != 0;
         overview = in.readString();
         release_date = in.readString();
+        favored = in.readByte() != 0;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -126,6 +146,11 @@ public class Movie  implements Parcelable {
         return release_date;
     }
 
+    public boolean getFavored(){ return  favored; }
+
+    public boolean setFavored(boolean favored){ this.favored = favored; return favored; }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -147,6 +172,9 @@ public class Movie  implements Parcelable {
         parcel.writeByte((byte) (adult ? 1 : 0));
         parcel.writeString(overview);
         parcel.writeString(release_date);
+        parcel.writeByte((byte) (favored ? 1 : 0));
+
+
 
 
     }
