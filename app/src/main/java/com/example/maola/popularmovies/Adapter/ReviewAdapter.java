@@ -39,15 +39,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
 
     public ReviewAdapter(List<Review> reviewList) {
         this.reviewList = reviewList;
-        //mOnClickListener = listener;
 
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View itemView = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.rv_item_poster, parent, false);
-//        return new MyViewHolder(itemView);
+
         Context context = parent.getContext();
         int layoutIdForListItem = R.layout.rv_item_review;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -59,52 +56,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
         return viewHolder;
     }
 
-//    @Override
-//    public void onViewAttachedToWindow(MyViewHolder holder) {
-//        holder.imageView.requestFocus();
-//        super.onViewAttachedToWindow(holder);
-//    }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         review = reviewList.get(position);
         holder.author.setText(review.getAuthor());
         holder.content.setText(review.getContent());
-        //holder.title.setText(movie.getTitle());
-//        final Context context = holder.imageView.getContext();
-
-
-//        final String ytLinkKey = review.getKey();
-//        String trailerTitle = review.getName();
-//        if(trailerTitle.length() > 30){
-//            trailerTitle = trailerTitle.substring(0,30).concat("...");
-//        }
-//        String linkThumb = ytBaseThumbUrl + ytLinkKey + ytFinalThumbUrl;
-//
-//        holder.title.setText(trailerTitle);
-//
-//        Picasso.with(context)
-//                .load(linkThumb)
-//                .into(holder.imageView);
-//
-//        holder.imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Toast.makeText(context, reviewList.get(position) + " " + position, Toast.LENGTH_LONG).show();
-//
-//                Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + ytLinkKey));
-//                Intent webIntent = new Intent(Intent.ACTION_VIEW,
-//                        Uri.parse("http://www.youtube.com/watch?v=" + ytLinkKey));
-//                try {
-//                    context.startActivity(appIntent);
-//                } catch (ActivityNotFoundException ex) {
-//                    context.startActivity(webIntent);
-//                }
-//
-//
-//            }
-//        });
-
         holder.position = position;
 
 
@@ -127,10 +84,5 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
             content = (TextView) view.findViewById(R.id.review_comment_tv);
         }
 
-//        @Override
-//        public void onClick(View view) {
-//            int clickedPosition = getAdapterPosition();
-//            //mOnClickListener.onListItemClick(clickedPosition);
-//        }
     }
 }

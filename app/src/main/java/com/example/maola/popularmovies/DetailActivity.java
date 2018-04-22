@@ -20,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.maola.popularmovies.Adapter.TrailerAdapter;
 import com.example.maola.popularmovies.Data.MovieDBContract;
@@ -60,8 +59,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     ImageView detailBackdrop;
     @BindView(R.id.detail_reviews_button)
     Button detailReviewsButton;
-//    @BindView(R.id.detail_trailer_lv)
-//    ListView detailTrailerLv;
 
     private final String BASE_POSTER_URL = "http://image.tmdb.org/t/p/w185";
     private final String BASE_BACKDROP_URL = "http://image.tmdb.org/t/p/w342";
@@ -93,7 +90,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         Intent i = getIntent();
         movie = i.getParcelableExtra("movie");
-        //favored = i.getBooleanExtra("movie_favored", false);
         String a = movie.getTitle();
         detailTitle.setText(a);
 
@@ -159,7 +155,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Uri uri = getContentResolver().insert(MovieDBContract.MovieEntry.CONTENT_URI, contentValues);
         if(uri != null){
             //Display the URI that's returned
-            Toast.makeText(this, "Added to favorite" + uri, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Added to favorite" + uri, Toast.LENGTH_SHORT).show();
         }
         }else{
            deleteMoviefromDB();
@@ -175,33 +171,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             loaderManager.restartLoader(DELETE_LOADER, null, this);
         }
 
-//        String [] column_movie_id = {String.valueOf(movie.getId())};
-//        // Query the movie and delete it
-//        Cursor data = getContentResolver().query(MovieDBContract.MovieEntry.CONTENT_URI,
-//                null,
-//                MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
-//                column_movie_id,
-//                null);
-//        int id = -1;
-//        String title = "";
-//        if (data.moveToFirst()){
-//            id = data.getInt(0);
-//            title = data.getString(2);
-//        }
-//        data.close();
-//        if(id != -1){
-//            Uri uri = MovieDBContract.MovieEntry.CONTENT_URI;
-//            uri = uri.buildUpon().appendPath(Integer.toString(id)).build();
-//
-//            int deleted = getContentResolver().delete(uri,
-//                    MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
-//                    column_movie_id);
-//
-//            Toast.makeText(this,
-//                    "Deleted " + title + " from favorite",
-//                    Toast.LENGTH_SHORT).show();
-//
-//        }
     }
 
     private void setPosterThumb() {
@@ -238,32 +207,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         return new ExtendsAysncTaskLoader(this, mTaskData, movie);
 
-//        return  new AsyncTaskLoader<Cursor>(this) {
-//            Cursor mMovieData = null;
-//            @Override
-//            protected void onStartLoading(){
-//                if(mMovieData != null){
-//                    deliverResult(mMovieData);
-//                }else{
-//                    forceLoad();
-//                }
-//            }
-//
-//
-//            @Override
-//            public Cursor loadInBackground() {
-//                String [] column_movie_id = {String.valueOf(movie.getId())};
-//
-//                Cursor data = getApplicationContext().getContentResolver().query(MovieDBContract.MovieEntry.CONTENT_URI,
-//                        null,
-//                        MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
-//                        column_movie_id,
-//                        null);
-//
-//
-//                return data;
-//            }
-//        };
+
     }
 
     @Override
@@ -276,11 +220,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                  if (data != null && data.getCount() > 0){
                      favored = true;
                      detailFavorite.setBackgroundResource(R.drawable.star_24_actived);
-                     Toast.makeText(this, "LoadFinished " + favored + " data not null", Toast.LENGTH_SHORT ).show();
+//                     Toast.makeText(this, "LoadFinished " + favored + " data not null", Toast.LENGTH_SHORT ).show();
                  }else{
                      favored = false;
                      detailFavorite.setBackgroundResource(R.drawable.star_24_deactived);
-                     Toast.makeText(this, "LoadFinished " + favored, Toast.LENGTH_SHORT ).show();
+//                     Toast.makeText(this, "LoadFinished " + favored, Toast.LENGTH_SHORT ).show();
                  }
                  break;
 
@@ -301,9 +245,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                             MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
                             column_movie_id);
 
-                    Toast.makeText(this,
-                            "Deleted " + title + " from favorite",
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this,
+//                            "Deleted " + title + " from favorite",
+//                            Toast.LENGTH_SHORT).show();
                 }
                 checkIfFavored();
                 break;
@@ -314,39 +258,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         }
-//        if(loaderId == FAVORED_LOADER){
-//        if (data != null && data.getCount() > 0){
-//            favored = true;
-//            detailFavorite.setBackgroundResource(R.drawable.star_24_actived);
-//            Toast.makeText(this, "LoadFinished " + favored + " data not null", Toast.LENGTH_SHORT ).show();
-//        }else{
-//            favored = false;
-//            detailFavorite.setBackgroundResource(R.drawable.star_24_deactived);
-//            Toast.makeText(this, "LoadFinished " + favored, Toast.LENGTH_SHORT ).show();
-//        }}else if(loaderId == DELETE_LOADER ){
-//            String [] column_movie_id = {String.valueOf(movie.getId())};
-//            int id = -1;
-//            String title = "";
-//            if (data.moveToFirst()){
-//                id = data.getInt(0);
-//                title = data.getString(2);
-//            }
-//            data.close();
-//            if(id != -1){
-//                Uri uri = MovieDBContract.MovieEntry.CONTENT_URI;
-//                uri = uri.buildUpon().appendPath(Integer.toString(id)).build();
-//
-//                int deleted = getContentResolver().delete(uri,
-//                        MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
-//                        column_movie_id);
-//
-//                Toast.makeText(this,
-//                        "Deleted " + title + " from favorite",
-//                        Toast.LENGTH_SHORT).show();
-//
-//            }
-//        }
-//    }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {

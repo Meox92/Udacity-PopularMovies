@@ -37,15 +37,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     public MovieAdapter(List<Movie> moviesList) {
         this.moviesList = moviesList;
-        //mOnClickListener = listener;
-
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View itemView = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.rv_item_poster, parent, false);
-//        return new MyViewHolder(itemView);
+
         Context context = parent.getContext();
         int layoutIdForListItem = R.layout.rv_item_poster;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -56,17 +52,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
         //Set default color for smaller poster
         viewHolder.itemView.setBackgroundColor(Color.BLACK);
-        //view.setOnClickListener(mOnClickListener);
 
 
         return viewHolder;
     }
 
-//    @Override
-//    public void onViewAttachedToWindow(MyViewHolder holder) {
-//        holder.imageView.requestFocus();
-//        super.onViewAttachedToWindow(holder);
-//    }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
@@ -78,29 +68,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
                 .load(BASE_POSTER_URL + posterPath)
                 .into(holder.imageView);
 
-        // Check if the movie has been marked as favored
-//        String [] column_movie_id = {String.valueOf(movie.getId())};
-//        boolean favored = false;
-//        Cursor data = context.getContentResolver().query(MovieDBContract.MovieEntry.CONTENT_URI,
-//                null,
-//                MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
-//                column_movie_id,
-//                null);
-
-//        if(data.getCount() > 0){
-//            holder.imageView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    //Toast.makeText(context, moviesList.get(position) + " " + position, Toast.LENGTH_LONG).show();
-//                    Intent i = new Intent(context, DetailActivity.class);
-//                    i.putExtra("movie", moviesList.get(position));
-//                    i.putExtra("movie_favored", true);
-//
-//                    context.startActivity(i);
-//
-//                }
-//            });
-//        }else{
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -137,10 +104,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             imageView = (ImageView) view.findViewById(R.id.main_poster_iw);
         }
 
-//        @Override
-//        public void onClick(View view) {
-//            int clickedPosition = getAdapterPosition();
-//            //mOnClickListener.onListItemClick(clickedPosition);
-//        }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.example.maola.popularmovies;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -35,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
     private ProgressDialog progressDialog;
+    private String activityTitle;
     private static String LIST_SORT_BY = "sort_by";
     private String LIST_SORT_BY_VALUE;
     private static String POPULAR = "popular";
     private static String RATED = "rated";
-    private List prova;
     private static final int MOVIE_LOADER = 22;
     private static final String SEARCH_MOVIE_URL_EXTRA = "query";
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         setSupportActionBar(toolbar);
 
         mService = APIUtils.getResults();
+        activityTitle = getTitle().toString();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
         GridLayoutManager manager = new GridLayoutManager(this , 2);
@@ -158,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     private Cursor loadFavorite(){
         Bundle queryBundle = new Bundle();
-        // COMPLETED (20) Use putString with SEARCH_QUERY_URL_EXTRA as the key and the String value of the URL as the value
         queryBundle.putString(SEARCH_MOVIE_URL_EXTRA, "query");
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader<Cursor> movieLoader = loaderManager.getLoader(MOVIE_LOADER);
@@ -188,14 +189,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         //noinspection SimplifiableIfStatement
         if (id == R.id.top_rated) {
             loadTopRatedResults();
+            setTitle(activityTitle.concat(" ").concat(getString(R.string.top_rated)));
             return true;
         }
         if (id == R.id.popular) {
             loadPopularResults();
+            setTitle(activityTitle.concat(" ").concat(getString(R.string.popular)));
             return true;
         }
         if (id == R.id.favorite) {
             loadFavorite();
+            setTitle(activityTitle.concat(" ").concat(getString(R.string.favorite)));
             return true;
         }
 
@@ -210,35 +214,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        return new AsyncTaskLoader<Cursor>(this) {
+        Cursor mTaskData = null;
+        progressDialog = ProgressDialog.show(MainActivity.this, "Loading in progress","Please wait...");
 
-            Cursor mMovieData = null;
-            @Override
-            protected void onStartLoading(){
-                progressDialog = ProgressDialog.show(MainActivity.this, "Loading in progress","Please wait...");
-
-                if(mMovieData != null){
-                    deliverResult(mMovieData);
-                }else{
-                    forceLoad();
-                }
-            }
-
-            @Override
-            public Cursor loadInBackground() {
-                try {
-                    return getContentResolver().query(MovieDBContract.MovieEntry.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            MovieDBContract.MovieEntry.COLUMN_MOVIE_ID);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.i("on loadInBackground", e.toString());
-                    return null;
-                }
-        }
-    };
+        return new ExtendsAysncTaskLoader(MainActivity.this, mTaskData);
     }
 
     @Override
@@ -267,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             data.close();
             mAdapter = new MovieAdapter(moviesList);
             mRecyclerView.setAdapter(mAdapter);
-           // Log.i("LoadFinished data", loader + "" + data);
 
         } else {
             Log.i("LoadFinished", "no load data");
@@ -279,4 +257,42 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+
+    public static class ExtendsAysncTaskLoader extends AsyncTaskLoader<Cursor>{
+        Cursor mTaskData;
+
+
+        public ExtendsAysncTaskLoader(Context context, Cursor cursor) {
+            super(context);
+            mTaskData = cursor;
+
+        }
+
+        @Override
+        protected void onStartLoading(){
+
+            if(mTaskData != null){
+                deliverResult(mTaskData);
+            }else{
+                forceLoad();
+            }
+        }
+
+        @Override
+        public Cursor loadInBackground() {
+            try {
+                return getContext().getContentResolver().query(MovieDBContract.MovieEntry.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        MovieDBContract.MovieEntry.COLUMN_MOVIE_ID);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.i("on loadInBackground", e.toString());
+                return null;
+            }
+        }
+    };
+
 }
