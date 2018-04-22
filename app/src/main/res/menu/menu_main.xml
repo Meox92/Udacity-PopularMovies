@@ -8,9 +8,10 @@
         android:title="@string/top_rated"
         app:showAsAction="never" />
     <item
+        android:id="@+id/favorite"
+        android:orderInCategory="101"
+        android:title="@string/favorite" />
+    <item
         android:id="@+id/popular"
         android:title="@string/popular" />
-    <item
-        android:id="@+id/favorite"
-        android:title="@string/favorite" />
 </menu>

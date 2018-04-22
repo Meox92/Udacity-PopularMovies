@@ -1,7 +1,7 @@
 package com.example.maola.popularmovies;
 
-import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.example.maola.popularmovies.Adapter.TrailerAdapter;
 import com.example.maola.popularmovies.Data.MovieDBContract;
 import com.example.maola.popularmovies.Models.Movie;
-import com.example.maola.popularmovies.Models.ResultsTrailer;
+import com.example.maola.popularmovies.Models.TrailerResults;
 import com.example.maola.popularmovies.Models.Trailer;
 import com.example.maola.popularmovies.Retrofit.APIUtils;
 import com.example.maola.popularmovies.Retrofit.MovieAPI;
@@ -58,13 +58,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     Button detailFavorite;
     @BindView(R.id.detail_backdrop)
     ImageView detailBackdrop;
+    @BindView(R.id.detail_reviews_button)
+    Button detailReviewsButton;
 //    @BindView(R.id.detail_trailer_lv)
 //    ListView detailTrailerLv;
 
     private final String BASE_POSTER_URL = "http://image.tmdb.org/t/p/w185";
     private final String BASE_BACKDROP_URL = "http://image.tmdb.org/t/p/w342";
+    private static String MOVIE_ID = "MOVIE_ID";
 
-    private Movie movie;
+    public Movie movie;
     private MovieAPI mService;
     private List<Trailer> trailerList;
     private ArrayAdapter adapter;
@@ -87,8 +90,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        TextView textView = (TextView) findViewById(R.id.detail_title);
 
         Intent i = getIntent();
         movie = i.getParcelableExtra("movie");
@@ -120,7 +121,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         setPosterThumb();
         loadTrailers();
 
-
+        detailReviewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(DetailActivity.this, ReviewsActivity.class);
+                i.putExtra(MOVIE_ID, movie.getId());
+                startActivity(i);
+            }
+        });
     }
 
     private void checkIfFavored(){
@@ -208,16 +216,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void loadTrailers() {
-        mService.getTrailers(movie.getId(), BuildConfig.API_KEY).enqueue(new Callback<ResultsTrailer>() {
+        mService.getTrailers(movie.getId(), BuildConfig.API_KEY).enqueue(new Callback<TrailerResults>() {
             @Override
-            public void onResponse(Call<ResultsTrailer> call, Response<ResultsTrailer> response) {
+            public void onResponse(Call<TrailerResults> call, Response<TrailerResults> response) {
                 trailerList = response.body().getResults();
                 mAdapter = new TrailerAdapter(trailerList);
                 detailTrailerRv.setAdapter(mAdapter);
             }
 
             @Override
-            public void onFailure(Call<ResultsTrailer> call, Throwable t) {
+            public void onFailure(Call<TrailerResults> call, Throwable t) {
 
             }
         });
@@ -226,33 +234,36 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Cursor mTaskData = null;
 
-        return new AsyncTaskLoader<Cursor>(this) {
-            Cursor mMovieData = null;
-            @Override
-            protected void onStartLoading(){
-                if(mMovieData != null){
-                    deliverResult(mMovieData);
-                }else{
-                    forceLoad();
-                }
-            }
+        return new ExtendsAysncTaskLoader(this, mTaskData, movie);
 
-
-            @Override
-            public Cursor loadInBackground() {
-                String [] column_movie_id = {String.valueOf(movie.getId())};
-
-                Cursor data = getApplicationContext().getContentResolver().query(MovieDBContract.MovieEntry.CONTENT_URI,
-                        null,
-                        MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
-                        column_movie_id,
-                        null);
-
-
-                return data;
-            }
-        };
+//        return  new AsyncTaskLoader<Cursor>(this) {
+//            Cursor mMovieData = null;
+//            @Override
+//            protected void onStartLoading(){
+//                if(mMovieData != null){
+//                    deliverResult(mMovieData);
+//                }else{
+//                    forceLoad();
+//                }
+//            }
+//
+//
+//            @Override
+//            public Cursor loadInBackground() {
+//                String [] column_movie_id = {String.valueOf(movie.getId())};
+//
+//                Cursor data = getApplicationContext().getContentResolver().query(MovieDBContract.MovieEntry.CONTENT_URI,
+//                        null,
+//                        MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
+//                        column_movie_id,
+//                        null);
+//
+//
+//                return data;
+//            }
+//        };
     }
 
     @Override
@@ -341,4 +352,51 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+    public static class ExtendsAysncTaskLoader extends AsyncTaskLoader<Cursor>{
+        Cursor mTaskData;
+        Movie movie;
+
+
+        public ExtendsAysncTaskLoader(Context context, Cursor cursor, Movie movie) {
+            super(context);
+            mTaskData = cursor;
+            this.movie = movie;
+
+        }
+
+        @Override
+        protected void onStartLoading() {
+            super.onStartLoading();
+            if(mTaskData != null){
+                deliverResult(mTaskData);
+            }else{
+                forceLoad();
+            }
+        }
+
+        @Override
+        public Cursor loadInBackground() {
+            String [] column_movie_id = {String.valueOf(movie.getId())};
+
+            try {
+            return getContext().getContentResolver().query(MovieDBContract.MovieEntry.CONTENT_URI,
+                    null,
+                    MovieDBContract.MovieEntry.COLUMN_MOVIE_ID +"=?",
+                    column_movie_id,
+                    null);
+            } catch (Exception e) {
+                Log.e("ExtendsAysncTaskLoader", "Failed to asynchronously load data.");
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        public void deliverResult(Cursor data) {
+            mTaskData = data;
+            super.deliverResult(data);
+        }
+    }
 }
+
+

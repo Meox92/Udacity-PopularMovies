@@ -4,6 +4,8 @@ package com.example.maola.popularmovies.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Review {
 
     @SerializedName("id")
@@ -18,6 +20,7 @@ public class Review {
     @SerializedName("url")
     @Expose
     private String url;
+
 
     public String getId() {
         return id;

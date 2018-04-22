@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Maola on 25/02/2018.
  */
 
-public class ResultsTrailer {
+public class TrailerResults {
 
     @SerializedName("id")
     @Expose

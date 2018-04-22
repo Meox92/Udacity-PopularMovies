@@ -8,5 +8,7 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="average_rate">Average rate: </string>
     <string name="trailers">Trailers</string>
+    <string name="title_activity_reviews">ReviewsActivity</string>
+    <string name="no_reviews">No reviews availble for this movie</string>
 
 </resources>

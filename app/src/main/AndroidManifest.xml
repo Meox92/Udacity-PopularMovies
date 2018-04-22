@@ -36,6 +36,10 @@
             android:authorities="com.example.maola.popularmovies"
             android:exported="false" />
 
+        <activity
+            android:name=".ReviewsActivity"
+            android:label="@string/title_activity_reviews"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
